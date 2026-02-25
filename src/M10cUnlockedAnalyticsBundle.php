@@ -15,7 +15,7 @@ class M10cUnlockedAnalyticsBundle extends AbstractBundle
     {
         $definition->rootNode()
             ->children()
-                ->booleanNode('anonymize_ip')->defaultFalse()->end()
+            ->booleanNode('anonymize_ip')->defaultFalse()->end()
             ->end()
         ;
     }
@@ -26,5 +26,22 @@ class M10cUnlockedAnalyticsBundle extends AbstractBundle
         $builder->setParameter('m10c_unlocked_analytics.anonymize_ip', $config['anonymize_ip']);
 
         $container->import('../config/services.yaml');
+    }
+
+    public function prependExtension(ContainerConfigurator $container, ContainerBuilder $builder): void
+    {
+        $builder->prependExtensionConfig('doctrine', [
+            'orm' => [
+                'mappings' => [
+                    'M10cUnlockedAnalyticsBundle' => [
+                        'type' => 'attribute',
+                        'is_bundle' => false,
+                        'dir' => __DIR__.'/Entity',
+                        'prefix' => 'M10c\UnlockedAnalyticsBundle\Entity',
+                        'alias' => 'M10cUnlockedAnalyticsBundle',
+                    ],
+                ],
+            ],
+        ]);
     }
 }
