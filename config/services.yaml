@@ -16,9 +16,11 @@ services:
             - '@doctrine'
             - '@unlocked_analytics.event_factory'
 
-    unlocked_analytics.action.batch:
-        class: M10c\UnlockedAnalyticsBundle\Action\BatchAction
+    M10c\UnlockedAnalyticsBundle\Action\BatchAction:
         public: true
         arguments:
             - '@unlocked_analytics.request_factory'
             - '@unlocked_analytics.request_handler'
+
+    unlocked_analytics.action.batch:
+        alias: M10c\UnlockedAnalyticsBundle\Action\BatchAction
