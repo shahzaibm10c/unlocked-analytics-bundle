@@ -8,26 +8,21 @@ use M10c\UnlockedAnalyticsBundle\Factory\AnalyticsRequestFactoryInterface;
 use M10c\UnlockedAnalyticsBundle\RequestHandler;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 final class BatchAction
 {
-    private AnalyticsRequestFactoryInterface $analyticsRequestFactory;
-    private RequestHandler $requestHandler;
-
     public function __construct(
-        AnalyticsRequestFactoryInterface $analyticsRequestFactory,
-        RequestHandler $requestHandler
+        private readonly AnalyticsRequestFactoryInterface $analyticsRequestFactory,
+        private readonly RequestHandler $requestHandler,
     ) {
-        $this->analyticsRequestFactory = $analyticsRequestFactory;
-        $this->requestHandler = $requestHandler;
     }
 
     #[Route('/analytics/batch', methods: ['POST'])]
     public function __invoke(Request $request): JsonResponse
     {
         $analyticsRequest = $this->analyticsRequestFactory->fromSymfonyRequest($request, true);
-        $this->requestHandler->__invoke($analyticsRequest);
+        ($this->requestHandler)($analyticsRequest);
 
         return new JsonResponse();
     }

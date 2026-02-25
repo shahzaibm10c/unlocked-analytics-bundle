@@ -5,57 +5,37 @@ declare(strict_types=1);
 namespace M10c\UnlockedAnalyticsBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Ramsey\Uuid\Doctrine\UuidGenerator;
+use Ramsey\Uuid\UuidInterface;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="analytics_request")
- *
- * @psalm-suppress MissingConstructor
- * @psalm-suppress PropertyNotSetInConstructor
- */
+#[ORM\Entity]
+#[ORM\Table(name: 'analytics_request')]
 class AnalyticsRequest
 {
-    /**
-     * @var \Ramsey\Uuid\UuidInterface
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="CUSTOM")
-     * @ORM\CustomIdGenerator(class="Ramsey\Uuid\Doctrine\UuidGenerator")
-     * @ORM\Column(type="uuid", unique=true)
-     */
-    public $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
+    #[ORM\Column(type: 'uuid', unique: true)]
+    public UuidInterface $id;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
+    #[ORM\Column(type: 'boolean')]
     public bool $batch = false;
 
-    /**
-     * @ORM\Column(nullable=true)
-     */
+    #[ORM\Column(nullable: true)]
     public ?string $userId = null;
 
-    /**
-     * @ORM\Column(nullable=true)
-     */
-    public ?string $ip;
+    #[ORM\Column(nullable: true)]
+    public ?string $ip = null;
 
-    /**
-     * @ORM\Column(nullable=true)
-     */
-    public ?string $userAgent;
+    #[ORM\Column(nullable: true)]
+    public ?string $userAgent = null;
 
-    /**
-     * @ORM\Column(nullable=true)
-     */
-    public ?string $acceptLanguage;
+    #[ORM\Column(nullable: true)]
+    public ?string $acceptLanguage = null;
 
-    /**
-     * @ORM\Column(type="datetimetz")
-     */
+    #[ORM\Column(type: 'datetimetz')]
     public \DateTimeInterface $requestedAt;
 
-    /**
-     * @ORM\Column(type="text")
-     */
+    #[ORM\Column(type: 'text')]
     public string $content;
 }

@@ -12,12 +12,8 @@ class AnalyticsEventFactory
 {
     /**
      * @return array<AnalyticsEvent>
-     *
-     * @psalm-suppress MixedAssignment
-     * @psalm-suppress MixedArgumentTypeCoercion
-     * @psalm-suppress MixedArgument
      */
-    public function fromAnalyticsRequest(AnalyticsRequest $analyticsRequest)
+    public function fromAnalyticsRequest(AnalyticsRequest $analyticsRequest): array
     {
         /** @var array<string, mixed> $content */
         $content = json_decode($analyticsRequest->content, true);
@@ -65,11 +61,6 @@ class AnalyticsEventFactory
 
     /**
      * @param array<string, mixed> $data
-     *
-     * @psalm-suppress MixedAssignment
-     * @psalm-suppress MixedArgumentTypeCoercion
-     * @psalm-suppress MixedArrayAccess
-     * @psalm-suppress MixedArgument
      */
     protected function populateFromRequestData(AnalyticsEvent $event, array $data): void
     {
@@ -79,7 +70,7 @@ class AnalyticsEventFactory
 
         $type = $data['type'] ?? '';
         if (!\in_array($type, [AnalyticsEvent::TYPE_TRACK, AnalyticsEvent::TYPE_SCREEN], true)) {
-            throw new \Exception(sprintf('Unexpected type: %s', $type));
+            throw new \Exception(\sprintf('Unexpected type: %s', $type));
         }
 
         $event->anonymousId = isset($data['anonymousId']) ? (string) $data['anonymousId'] : null;
@@ -118,10 +109,10 @@ class AnalyticsEventFactory
         $event->contextLocationRegion = isset($data['context']['location']['region']) ? (string) $data['context']['location']['region'] : null;
         $event->contextLocationSpeed = isset($data['context']['location']['speed']) ? (string) $data['context']['location']['speed'] : null;
 
-        $event->contextNetworkBluetooth = isset($data['context']['network']['bluetooth']) ? (bool) $data['context']['location']['bluetooth'] : null;
-        $event->contextNetworkCarrier = isset($data['context']['network']['carrier']) ? (string) $data['context']['location']['carrier'] : null;
-        $event->contextNetworkCellular = isset($data['context']['network']['cellular']) ? (bool) $data['context']['location']['cellular'] : null;
-        $event->contextNetworkWifi = isset($data['context']['network']['wifi']) ? (bool) $data['context']['location']['wifi'] : null;
+        $event->contextNetworkBluetooth = isset($data['context']['network']['bluetooth']) ? (bool) $data['context']['network']['bluetooth'] : null;
+        $event->contextNetworkCarrier = isset($data['context']['network']['carrier']) ? (string) $data['context']['network']['carrier'] : null;
+        $event->contextNetworkCellular = isset($data['context']['network']['cellular']) ? (bool) $data['context']['network']['cellular'] : null;
+        $event->contextNetworkWifi = isset($data['context']['network']['wifi']) ? (bool) $data['context']['network']['wifi'] : null;
 
         $event->contextOsName = isset($data['context']['os']['name']) ? (string) $data['context']['os']['name'] : null;
         $event->contextOsVersion = isset($data['context']['os']['version']) ? (string) $data['context']['os']['version'] : null;

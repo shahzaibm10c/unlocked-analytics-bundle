@@ -7,27 +7,21 @@ namespace M10c\UnlockedAnalyticsBundle;
 use Doctrine\Persistence\ManagerRegistry;
 use M10c\UnlockedAnalyticsBundle\Entity\AnalyticsEvent;
 use M10c\UnlockedAnalyticsBundle\Entity\AnalyticsRequest;
-use M10c\UnlockedAnalyticsBundle\Entity\Request;
 use M10c\UnlockedAnalyticsBundle\Factory\AnalyticsEventFactory;
 
 class RequestHandler
 {
-    private ManagerRegistry $managerRegistry;
-    private AnalyticsEventFactory $analyticsEventFactory;
-
     public function __construct(
-        ManagerRegistry $managerRegistry,
-        AnalyticsEventFactory $analyticsEventFactory
+        private readonly ManagerRegistry $managerRegistry,
+        private readonly AnalyticsEventFactory $analyticsEventFactory,
     ) {
-        $this->managerRegistry = $managerRegistry;
-        $this->analyticsEventFactory = $analyticsEventFactory;
     }
 
     public function __invoke(AnalyticsRequest $analyticsRequest): void
     {
         $em = $this->managerRegistry->getManagerForClass(AnalyticsRequest::class);
         if (!$em) {
-            throw new \Exception(sprintf('Could not find manager for class %s', AnalyticsRequest::class));
+            throw new \Exception(\sprintf('Could not find manager for class %s', AnalyticsRequest::class));
         }
 
         $storeAnonymous = false; // TODO: config
@@ -58,7 +52,7 @@ class RequestHandler
         // Destination: local DB
         $em = $this->managerRegistry->getManagerForClass(AnalyticsEvent::class);
         if (!$em) {
-            throw new \Exception(sprintf('Could not find manager for class %s', AnalyticsEvent::class));
+            throw new \Exception(\sprintf('Could not find manager for class %s', AnalyticsEvent::class));
         }
         $em->persist($analyticsEvent);
     }

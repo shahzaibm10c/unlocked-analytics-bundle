@@ -33,7 +33,7 @@ final class Util
 
     public static function extractLocaleFromAcceptLanguage(string $acceptLanguage): ?string
     {
-        $parts = array_map(fn ($part) => trim($part), explode(',', $acceptLanguage));
+        $parts = array_map(static fn ($part) => trim($part), explode(',', $acceptLanguage));
         foreach ($parts as $part) {
             preg_match('/^([a-z]{2,3}(-[A-Za-z0-9-]+)?)(;q=[0-9\.]+)?$/', $part, $matches);
             if ($matches) {

@@ -1,0 +1,24 @@
+services:
+    _defaults:
+        public: false
+
+    unlocked_analytics.event_factory:
+        class: M10c\UnlockedAnalyticsBundle\Factory\AnalyticsEventFactory
+
+    unlocked_analytics.request_factory:
+        class: M10c\UnlockedAnalyticsBundle\Factory\AnalyticsRequestFactory
+        arguments:
+            - '%m10c_unlocked_analytics.anonymize_ip%'
+
+    unlocked_analytics.request_handler:
+        class: M10c\UnlockedAnalyticsBundle\RequestHandler
+        arguments:
+            - '@doctrine'
+            - '@unlocked_analytics.event_factory'
+
+    unlocked_analytics.action.batch:
+        class: M10c\UnlockedAnalyticsBundle\Action\BatchAction
+        public: true
+        arguments:
+            - '@unlocked_analytics.request_factory'
+            - '@unlocked_analytics.request_handler'
