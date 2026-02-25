@@ -25,7 +25,7 @@ class AnalyticsRequestFactory implements AnalyticsRequestFactoryInterface
         $request->requestedAt = new \DateTime();
 
         $ip = $symfonyRequest->getClientIp();
-        if ($this->anonymizeIp) {
+        if (null !== $ip && $this->anonymizeIp) {
             $ip = Util::anonymizeIp($ip);
         }
         $request->ip = $ip;

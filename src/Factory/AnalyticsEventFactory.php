@@ -64,11 +64,11 @@ class AnalyticsEventFactory
      */
     protected function populateFromRequestData(AnalyticsEvent $event, array $data): void
     {
-        if (!$data['type']) {
+        if (!isset($data['type']) || !\is_string($data['type'])) {
             throw new \Exception('Event type missing');
         }
 
-        $type = $data['type'] ?? '';
+        $type = $data['type'];
         if (!\in_array($type, [AnalyticsEvent::TYPE_TRACK, AnalyticsEvent::TYPE_SCREEN], true)) {
             throw new \Exception(\sprintf('Unexpected type: %s', $type));
         }

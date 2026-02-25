@@ -24,8 +24,8 @@ class RequestHandler
             throw new \Exception(\sprintf('Could not find manager for class %s', AnalyticsRequest::class));
         }
 
-        $storeAnonymous = false; // TODO: config
-        if (!$analyticsRequest->userId && !$storeAnonymous) {
+        // TODO: add config option to store anonymous events
+        if (!$analyticsRequest->userId) {
             return;
         }
 
